@@ -28,6 +28,8 @@ jobs:
           distribution: 'zulu'
           java-version: 17
           cache: 'gradle'
+      - name: Accept Android SDK licenses
+        run: yes | $ANDROID_HOME/cmdline-tools/*/bin/sdkmanager --licenses > /dev/null || true
       - name: Build the app
         run: ./gradlew assemble${{ matrix.target }}Release
       - name: Run Unit tests
