@@ -80,17 +80,13 @@ jobs:
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
     - if: matrix.build-mode == 'manual'
-      name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-
-    - if: matrix.build-mode == 'manual'
       name: Use debug signing
-      run: mkdir -p ~/.gradle && echo -e "icsopenvpnDebugSign=true\norg.gradle.jvmargs=-Xmx2048M" > ~/.gradle/gradle.properties
+      run: mkdir -p ~/.gradle && echo -e "icsopenvpnDebugSign=true\norg.gradle.jvmargs=-Xmx4096M" > ~/.gradle/gradle.properties
       
     - if: matrix.build-mode == 'manual'
-      name: Setup Android SDK
-      uses: android-actions/setup-android@v3
-  
+      name: Accept Android SDK licenses
+      run: yes | $ANDROID_HOME/cmdline-tools/*/bin/sdkmanager --licenses > /dev/null || true
+
     - if: matrix.build-mode == 'manual'
       name: Build the app
       run: ./gradlew assembleUiOvpn23Release
